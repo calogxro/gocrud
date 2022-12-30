@@ -1,4 +1,4 @@
-package crud
+package gocrud
 
 type CrudRepository[T any, I comparable] struct {
 	entities  map[I]*T

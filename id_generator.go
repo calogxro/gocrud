@@ -1,4 +1,4 @@
-package crud
+package gocrud
 
 import "github.com/google/uuid"
 
@@ -8,6 +8,11 @@ type IDGenerator[I comparable] interface {
 
 type StringGenerator struct {
 	ids map[string]string
+}
+
+func NewStringGenerator() IDGenerator[string] {
+	var g IDGenerator[string] = &StringGenerator{}
+	return g
 }
 
 func (g StringGenerator) Next() (string, error) {
@@ -20,6 +25,11 @@ func (g StringGenerator) Next() (string, error) {
 		return "", &KeyExists{}
 	}
 	return id.String(), nil
+}
+
+func NewIntGenerator() IDGenerator[int] {
+	var g IDGenerator[int] = &IntGenerator{}
+	return g
 }
 
 type IntGenerator struct {

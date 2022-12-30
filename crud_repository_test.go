@@ -1,28 +1,36 @@
-package crud
+package gocrud
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-type person struct {
+type Person struct {
 	firstName string
 	lastName  string
 }
 
 func TestCrud(t *testing.T) {
-	var g IDGenerator[int] = &IntGenerator{}
+	var crud = NewCrudRepository[Person](NewIntGenerator())
 
-	var crud = NewCrudRepository[person](g)
-	id, err := crud.Save(&person{
+	person := Person{
 		firstName: "Elon",
 		lastName:  "Musk",
-	})
-
-	if id != 1 {
-		t.Fatal("id should be 1")
 	}
 
-	if err != nil {
-		t.Fatal("error should be nil")
-	}
+	// Save
+
+	id, err := crud.Save(&person)
+
+	assert.Equal(t, 1, id)
+	assert.Nil(t, err)
+
+	// FindById
+
+	want := person
+	found, err := crud.FindById(id)
+
+	assert.Equal(t, want, *found)
+	assert.Nil(t, err)
 }

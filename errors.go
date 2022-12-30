@@ -1,4 +1,4 @@
-package crud
+package gocrud
 
 const MSG_KEY_EXISTS = "Key exists"
 const MSG_KEY_NOTFOUND = "Key not found"
