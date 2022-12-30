@@ -20,7 +20,8 @@ type Person struct {
 }
 
 func main() {
-	var crud = gocrud.NewCrudRepository[Person](gocrud.NewIntGenerator())
+    var g = gocrud.NewIntGenerator()
+    var crud = gocrud.New[Person](g)
 
 	// Save
 	id, _ := crud.Save(&Person{
@@ -29,9 +30,9 @@ func main() {
 	})
 
 	// FindById
-	person, _ := crud.FindById(id)
+	p, _ := crud.FindById(id)
 
-	fmt.Printf("#%d: %s %s", id, person.firstName, person.lastName)
+	fmt.Printf("#%d: %s %s", id, p.firstName, p.lastName)
 	// Output: #1: Elon Musk
 }
 ```

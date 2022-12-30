@@ -5,7 +5,8 @@ type CrudRepository[T any, I comparable] struct {
 	generator IDGenerator[I]
 }
 
-func NewCrudRepository[T any, I comparable](generator IDGenerator[I]) CrudRepository[T, I] {
+// NewCrudRepository
+func New[T any, I comparable](generator IDGenerator[I]) CrudRepository[T, I] {
 	return CrudRepository[T, I]{
 		entities:  make(map[I]*T),
 		generator: generator,

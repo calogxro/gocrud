@@ -12,7 +12,7 @@ type Person struct {
 }
 
 func TestCrud(t *testing.T) {
-	var crud = NewCrudRepository[Person](NewIntGenerator())
+	var crud = New[Person](NewIntGenerator())
 
 	person := Person{
 		firstName: "Elon",
