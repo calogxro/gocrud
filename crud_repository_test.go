@@ -7,12 +7,17 @@ import (
 )
 
 type Person struct {
+	ID        int
 	firstName string
 	lastName  string
 }
 
+type StructWithoutID struct {
+	field string
+}
+
 func TestCrud(t *testing.T) {
-	var crud = New[Person](NewIntGenerator())
+	var crud = New[Person]()
 
 	person := Person{
 		firstName: "Elon",
@@ -23,14 +28,39 @@ func TestCrud(t *testing.T) {
 
 	id, err := crud.Save(&person)
 
+	assert.Equal(t, id, person.ID)
+	assert.Equal(t, 1, person.ID)
+	assert.Nil(t, err)
+
+	// FindById
+
+	expected := person
+	found, err := crud.FindById(person.ID)
+
+	assert.Equal(t, 1, expected.ID)
+	assert.Equal(t, expected, *found)
+	assert.Nil(t, err)
+}
+
+func TestCrudWithoutID(t *testing.T) {
+	var crud = New[StructWithoutID]()
+
+	object := StructWithoutID{
+		field: "something random",
+	}
+
+	// Save
+
+	id, err := crud.Save(&object)
+
 	assert.Equal(t, 1, id)
 	assert.Nil(t, err)
 
 	// FindById
 
-	want := person
+	expected := object
 	found, err := crud.FindById(id)
 
-	assert.Equal(t, want, *found)
+	assert.Equal(t, expected, *found)
 	assert.Nil(t, err)
 }

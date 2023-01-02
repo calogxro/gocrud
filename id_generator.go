@@ -1,42 +1,10 @@
 package gocrud
 
-import "github.com/google/uuid"
-
-type IDGenerator[I comparable] interface {
-	Next() (I, error)
+type IDGenerator struct {
+	nextId int
 }
 
-type StringGenerator struct {
-	ids map[string]string
-}
-
-func NewStringGenerator() IDGenerator[string] {
-	var g IDGenerator[string] = &StringGenerator{}
-	return g
-}
-
-func (g StringGenerator) Next() (string, error) {
-	id, err := uuid.NewRandom()
-	if err != nil {
-		return "", err
-	}
-	_, exists := g.ids[id.String()]
-	if exists {
-		return "", &KeyExists{}
-	}
-	return id.String(), nil
-}
-
-func NewIntGenerator() IDGenerator[int] {
-	var g IDGenerator[int] = &IntGenerator{}
-	return g
-}
-
-type IntGenerator struct {
-	counter int
-}
-
-func (g *IntGenerator) Next() (int, error) {
-	g.counter++
-	return g.counter, nil
+func (g *IDGenerator) Next() (int, error) {
+	g.nextId++
+	return g.nextId, nil
 }
